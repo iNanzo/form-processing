@@ -20,7 +20,6 @@
      </header>
      
    <main class="wrapper">
- 
     <h2 class="subheader">An HTML/CSS/JS example by NAME HERE</h2>
     <div id="output">
       <p>The following is a demonstration of a form that can be filled out and when data is entered, the data can be seen on the page.</p>
@@ -31,27 +30,55 @@
         <label for="FirstName">First Name</label><br>
         <input type="text" name="First_Name" id="FirstName" placeholder="First Name" required autofocus>
       </div>
-
       <div>
-        <label for="FirstName">Last Name</label><br>
+        <label for="LastName">Last Name</label><br>
         <input type="text" name="Last_Name" id="LastName" placeholder="Last Name" required>
       </div>
+      <div>
+        <label for="Phone">Phone</label><br>
+        <input type="tel" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="xxx-xxx-xxxx" required>
+      </div>
 
+      <!-- 1. Checkboxes for "Interested In" -->
       <div>
         <fieldset>
-          <legend>Would you like to join our mailing list?</legend>
+          <legend>Interested In</legend>
+          <label>
+            <input type="checkbox" name="Interested_In" value="Website"> Website <br>
+            <input type="checkbox" name="Interested_In" value="Shopping Cart"> Shopping Cart <br>
+            <input type="checkbox" name="Interested_In" value="Stuff"> Stuff <br>
+            <input type="checkbox" name="Interested_In" value="Lollipops"> Lollipops <br>
+          </label>
         </fieldset>
       </div>
 
+      <!-- 2. Radio Buttons for Mailing List -->
       <div>
-        <label for="Phone">Phone</label><br>
-        <input type="tel" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-        placeholder="xxx-xxx-xxxx" required>
+        <fieldset>
+          <legend>Would you like to join our mailing list?</legend>
+          <label>
+            <input type="radio" name="Mailing_List" value="Yes"> Yes <br>
+            <input type="radio" name="Mailing_List" value="No"> No <br>
+          </label>
+        </fieldset>
       </div>
 
+      <!-- 3. Note Field -->
       <div>
-        <label>State</label><br>
-        <select name="State">
+        <label for="Note">Note</label>
+        <textarea id="Note" name="note" placeholder="Place any special instructions here" rows="4" cols="42"></textarea>
+      </div>
+
+      <!-- 4. Postal Code -->
+      <div>
+        <label for="PostalCode">Postal Code</label><br>
+        <input type="text" name="Postal_Code" id="PostalCode" placeholder="Postal Code" required>
+      </div>
+
+      <!-- 5. State as a Dropdown -->
+      <div>
+        <label for="State">State</label><br>
+        <select name="State" id="State">
           <option value="AK">Alaska</option>
           <option value="CA">California</option>
           <option value="OR">Oregon</option>
@@ -77,11 +104,19 @@
 
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
-
-    if(queryString.length > 0){//data submitted
+    
+    if(queryString.length > 0){ // Data submitted
       let myOutput = `<div id="container">`;
-
+      
       urlParams.forEach(function(value,key){
+        switch(key){
+          case "First_Name":
+          case "Last_Name":
+          case "City":
+          case "Address":
+            value = titleCase(value);  
+          break;
+        }
 
         key = key.split("_").join(" ");
         myOutput += `<p>${key}: ${value}</p>`;
@@ -89,6 +124,14 @@
       myOutput += `<p><a href="index.html">CLEAR</a></p>`; 
       myOutput += `</div>`;
       document.querySelector("#output").innerHTML = myOutput;
+    }
+
+    function titleCase(str) {
+      str = str.split(" "); 
+      for(let x = 0; x < str.length; x++){
+        str[x] = str[x].charAt(0).toUpperCase() + str[x].slice(1).toLowerCase();
+      }
+      return str.join(" ");
     }
   </script>  
  </body>
